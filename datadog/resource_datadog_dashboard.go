@@ -3373,6 +3373,11 @@ func getQueryTableRequestSchema() map[string]*schema.Schema {
 			Type:     schema.TypeString,
 			Optional: true,
 		},
+		"cell_display_mode": {
+			Type:     schema.TypeList,
+			Optional: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
 	}
 }
 func buildDatadogQueryTableRequests(terraformRequests *[]interface{}) *[]datadogV1.TableWidgetRequest {
@@ -3418,6 +3423,9 @@ func buildDatadogQueryTableRequests(terraformRequests *[]interface{}) *[]datadog
 		}
 		if v, ok := terraformRequest["order"].(string); ok && len(v) != 0 {
 			datadogQueryTableRequest.SetOrder(datadogV1.WidgetSort(v))
+		}
+		if v, ok := terraformRequest["cell_display_mode"].([]datadogV1.TableWidgetCellDisplayMode); ok && len(v) != 0 {
+			datadogQueryTableRequest.SetCellDisplayMode(v)
 		}
 		datadogRequests[i] = *datadogQueryTableRequest
 	}
@@ -3465,6 +3473,9 @@ func buildTerraformQueryTableRequests(datadogQueryTableRequests *[]datadogV1.Tab
 		}
 		if v, ok := datadogRequest.GetOrderOk(); ok {
 			terraformRequest["order"] = *v
+		}
+		if v, ok := datadogRequest.GetCellDisplayModeOk(); ok {
+			terraformRequest["cell_display_mode"] = *v
 		}
 		terraformRequests[i] = terraformRequest
 	}
