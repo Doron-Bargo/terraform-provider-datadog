@@ -104,6 +104,7 @@ resource "datadog_dashboard" "query_table_dashboard" {
 				alias = "cpu user"
 				limit = 25
 				order = "desc"
+				cell_display_mode = ["number"]
 			}
 			request {
 				q = "avg:system.load.1{*} by {service, team}"
@@ -114,6 +115,7 @@ resource "datadog_dashboard" "query_table_dashboard" {
 					comparator = ">"
 				}
 				alias = "system load"
+				cell_display_mode = ["number"]
 			}
 		}
 	}
@@ -182,6 +184,8 @@ var datadogDashboardQueryTableAsserts = []string{
 	"widget.1.query_table_definition.0.request.0.apm_stats_query.0.primary_tag = tag:*",
 	"widget.1.query_table_definition.0.request.0.apm_stats_query.0.name = name",
 	"widget.1.query_table_definition.0.request.0.apm_stats_query.0.row_type = resource",
+	"widget.0.query_table_definition.0.request.0.cell_display_mode.0 = number",
+	"widget.0.query_table_definition.0.request.1.cell_display_mode.0 = number",
 }
 
 func TestAccDatadogDashboardQueryTable(t *testing.T) {
