@@ -3297,6 +3297,10 @@ func getQueryTableDefinitionSchema() map[string]*schema.Schema {
 				Schema: getWidgetTimeSchema(),
 			},
 		},
+		"has_search_bar": {
+			Type:     schema.TypeString,
+			Optional: true,
+		},
 	}
 }
 func buildDatadogQueryTableDefinition(terraformDefinition map[string]interface{}) *datadogV1.TableWidgetDefinition {
@@ -3317,6 +3321,9 @@ func buildDatadogQueryTableDefinition(terraformDefinition map[string]interface{}
 	if v, ok := terraformDefinition["time"].(map[string]interface{}); ok && len(v) > 0 {
 		datadogDefinition.SetTime(*buildDatadogWidgetTime(v))
 	}
+	if v, ok := terraformDefinition["has_search_bar"].(datadogV1.TableWidgetHasSearchBar); ok && len(v) != 0 {
+		datadogDefinition.SetHasSearchBar(v)
+	}
 	return datadogDefinition
 }
 func buildTerraformQueryTableDefinition(datadogDefinition datadogV1.TableWidgetDefinition) map[string]interface{} {
@@ -3335,6 +3342,9 @@ func buildTerraformQueryTableDefinition(datadogDefinition datadogV1.TableWidgetD
 	}
 	if v, ok := datadogDefinition.GetTimeOk(); ok {
 		terraformDefinition["time"] = buildTerraformWidgetTime(*v)
+	}
+	if v, ok := datadogDefinition.GetHasSearchBarOk(); ok {
+		terraformDefinition["has_search_bar"] = *v
 	}
 	return terraformDefinition
 }
