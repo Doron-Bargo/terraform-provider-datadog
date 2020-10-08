@@ -117,6 +117,7 @@ resource "datadog_dashboard" "query_table_dashboard" {
 				alias = "system load"
 				cell_display_mode = ["number"]
 			}
+			has_search_bar = "auto"
 		}
 	}
 
@@ -131,6 +132,7 @@ resource "datadog_dashboard" "query_table_dashboard" {
 					row_type = "resource"
 				}
 			}
+			has_search_bar = "never"
 		}
 	}
 }
@@ -186,6 +188,8 @@ var datadogDashboardQueryTableAsserts = []string{
 	"widget.1.query_table_definition.0.request.0.apm_stats_query.0.row_type = resource",
 	"widget.0.query_table_definition.0.request.0.cell_display_mode.0 = number",
 	"widget.0.query_table_definition.0.request.1.cell_display_mode.0 = number",
+	"widget.0.query_table_definition.0.has_search_bar = auto",
+	"widget.1.query_table_definition.0.has_search_bar = never",
 }
 
 func TestAccDatadogDashboardQueryTable(t *testing.T) {
